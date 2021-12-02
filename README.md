@@ -1,15 +1,36 @@
-# app_version_checker
+# App Version Checker
 
-Check if your app is up-to-date
+Check if your application is up-to-date
 
-## A lightweight flutter plugin to check if your app is up-to-date
+## A flutter plugin to check if your app is up-to-date
 
-This project is a starting point for a Flutter
-[plug-in package](https://flutter.dev/developing-packages/),
-a specialized package that includes platform-specific implementation code for
-Android and/or iOS.
+### Usage
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+```dart
+  final _checker = AppVersionChecker();
+
+  @override
+  void initState() {
+    super.initState();
+    checkVersion();
+  }
+
+  void checkVersion() async {
+    _checker.checkUpdate().then((value) {
+      print(value.canUpdate); //return true if update is available
+      print(value.currentVersion); //return current app version
+      print(value.newVersion); //return the new app version
+      print(value.appURL); //return the app url
+      print(value.errorMessage); //return error message if found else it will return null
+    });
+  }
+```
+#### Or
+
+```dart
+  final _checker = AppVersionChecker(
+      appId: "specify the app id (optional)",
+      currentVersion: "specify the current version (optional)");
+...
+```
 
