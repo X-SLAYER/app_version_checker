@@ -3,7 +3,14 @@
 this package is used to check if your app has a new version on playstore or apple app store.
 or you can even check what is the latest version of another app on playstore or apple app store.
 
-## A flutter plugin to check if your app is up-to-date
+### Installing
+
+Add App Version Checker to your pubspec:
+
+```yaml
+dependencies:
+  app_version_checker: any # or the latest version on Pub
+```
 
 ### Usage
 
