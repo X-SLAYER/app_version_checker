@@ -1,3 +1,6 @@
+import 'dart:developer';
+
+import 'package:app_version_checker/app_version_checker.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -12,10 +15,18 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  final _checker = AppVersionChecker(appId: "com.localiragps.app");
+
   @override
   void initState() {
     super.initState();
-    // initPlatformState();
+    checkVersion();
+  }
+
+  void checkVersion() async {
+    _checker.checkUpdate().then((value) {
+      log(value.toString());
+    });
   }
 
   @override
@@ -23,7 +34,7 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('Plugin example app'),
+          title: const Text('APP Version Checker'),
         ),
         body: const Center(
           child: Text('Current Version'),
