@@ -42,3 +42,13 @@ dependencies:
 ...
 ```
 
+#### Use on ApkPure Store
+
+```dart
+   final _checker = AppVersionChecker(
+    appId: "com.vanced.android.youtube",
+    androidStore: AndroidStore.apkPure,
+  );
+...
+```
+
