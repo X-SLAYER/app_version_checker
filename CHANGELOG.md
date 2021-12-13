@@ -4,4 +4,4 @@
 
 ## 0.0.2
 
-- Add ApkPure Stoe to check on
+- Add ApkPure Store to check on
