@@ -15,7 +15,10 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  final _checker = AppVersionChecker(appId: "com.localiragps.app");
+  final _checker = AppVersionChecker(
+    appId: "com.vanced.android.youtube",
+    androidStore: AndroidStore.apkPure,
+  );
 
   @override
   void initState() {

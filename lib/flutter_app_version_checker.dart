@@ -5,6 +5,8 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:package_info_plus/package_info_plus.dart';
 
+enum AndroidStore { googlePlayStore, apkPure }
+
 class AppVersionChecker {
   /// The current version of the app.
   /// if [currentVersion] is null the [currentVersion] will take the Flutter package version
@@ -14,14 +16,27 @@ class AppVersionChecker {
   /// if [appId] is null the [appId] will take the Flutter package identifier
   final String? appId;
 
-  AppVersionChecker({this.currentVersion, this.appId});
+  /// Select The marketplace of your app
+  /// default will be `AndroidStore.GooglePlayStore`
+  final AndroidStore androidStore;
+
+  AppVersionChecker({
+    this.currentVersion,
+    this.appId,
+    this.androidStore = AndroidStore.googlePlayStore,
+  });
 
   Future<AppCheckerResult> checkUpdate() async {
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
     final _currentVersion = currentVersion ?? packageInfo.version;
     final _packageName = appId ?? packageInfo.packageName;
     if (Platform.isAndroid) {
-      return await _checkPlayStore(_currentVersion, _packageName);
+      switch (androidStore) {
+        case AndroidStore.apkPure:
+          return await _checkApkPureStore(_currentVersion, _packageName);
+        default:
+          return await _checkPlayStore(_currentVersion, _packageName);
+      }
     } else if (Platform.isIOS) {
       return await _checkAppleStore(_currentVersion, _packageName);
     } else {
@@ -97,6 +112,38 @@ class AppVersionChecker {
       errorMsg,
     );
   }
+}
+
+Future<AppCheckerResult> _checkApkPureStore(
+    String currentVersion, String packageName) async {
+  String? errorMsg;
+  String? newVersion;
+  String? url;
+  Uri uri = Uri.https("apkpure.com", "$packageName/$packageName");
+  log(uri.toString());
+  try {
+    final response = await http.get(uri);
+    if (response.statusCode != 200) {
+      errorMsg =
+          "Can't find an app in the ApkPure Store with the id: $packageName";
+    } else {
+      newVersion = RegExp(
+              r'<div class="details-sdk"><span itemprop="version">(.*?)<\/span>for Android<\/div>')
+          .firstMatch(response.body)!
+          .group(1)!
+          .trim();
+      url = uri.toString();
+    }
+  } catch (e) {
+    log("$e");
+    errorMsg = "$e";
+  }
+  return AppCheckerResult(
+    currentVersion,
+    newVersion,
+    url,
+    errorMsg,
+  );
 }
 
 class AppCheckerResult {

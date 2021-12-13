@@ -1,6 +1,6 @@
 name: flutter_app_version_checker
 description: A lightweight flutter plugin to check if your app is up-to-date on Google Play Store or Apple App Store
-version: 0.0.1
+version: 0.0.2
 homepage: https://github.com/X-SLAYER/app_version_checker
 documentation: https://github.com/X-SLAYER/app_version_checker
 
