@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:math' as math;
 
 import 'package:http/http.dart' as http;
 import 'package:package_info_plus/package_info_plus.dart';
@@ -161,7 +162,37 @@ class AppCheckerResult {
   );
 
   /// return `true` if update is available
-  bool get canUpdate => currentVersion != (newVersion ?? currentVersion);
+  bool get canUpdate =>
+      _shouldUpdate(currentVersion, (newVersion ?? currentVersion));
+
+  bool _shouldUpdate(String versionA, String versionB) {
+    List<String> versionTokensA = versionA.split(".");
+    List<String> versionTokensB = versionB.split(".");
+    List<int> versionNumbersA = [];
+    List<int> versionNumbersB = [];
+
+    for (String versionToken in versionTokensA) {
+      versionNumbersA.add(int.tryParse(versionToken) ?? 0);
+    }
+    for (String versionToken in versionTokensB) {
+      versionNumbersB.add(int.tryParse(versionToken) ?? 0);
+    }
+
+    final int versionASize = versionNumbersA.length;
+    final int versionBSize = versionNumbersB.length;
+    int maxSize = math.max(versionASize, versionBSize);
+
+    for (int i = 0; i < maxSize; i++) {
+      if ((i < versionASize ? versionNumbersA[i] : 0) >
+          (i < versionBSize ? versionNumbersB[i] : 0)) {
+        return false;
+      } else if ((i < versionASize ? versionNumbersA[i] : 0) <
+          (i < versionBSize ? versionNumbersB[i] : 0)) {
+        return true;
+      }
+    }
+    return false;
+  }
 
   @override
   String toString() {

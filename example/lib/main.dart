@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter_app_version_checker/flutter_app_version_checker.dart';
 import 'package:flutter/material.dart';
 
