@@ -14,9 +14,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   final _youtubeChecker = AppVersionChecker(
-    appId: "com.vanced.android.youtube",
-    androidStore: AndroidStore.apkPure,
-  );
+      appId: "com.vanced.android.youtube", androidStore: AndroidStore.apkPure);
   final _facebookChecker = AppVersionChecker(appId: "com.facebook.katana");
   String? fbValue;
   String? youtubeValue;
