@@ -15,10 +15,13 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  final _checker = AppVersionChecker(
+  final _youtubeChecker = AppVersionChecker(
     appId: "com.vanced.android.youtube",
     androidStore: AndroidStore.apkPure,
   );
+  final _facebookChecker = AppVersionChecker(appId: "com.facebook.katana");
+  String? fbValue;
+  String? youtubeValue;
 
   @override
   void initState() {
@@ -27,9 +30,9 @@ class _MyAppState extends State<MyApp> {
   }
 
   void checkVersion() async {
-    _checker.checkUpdate().then((value) {
-      log(value.toString());
-    });
+    fbValue = (await _facebookChecker.checkUpdate()).toString();
+    youtubeValue = (await _youtubeChecker.checkUpdate()).toString();
+    setState(() {});
   }
 
   @override
@@ -39,8 +42,30 @@ class _MyAppState extends State<MyApp> {
         appBar: AppBar(
           title: const Text('APP Version Checker'),
         ),
-        body: const Center(
-          child: Text('Current Version'),
+        body: Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: ListView(
+            children: [
+              const SizedBox(height: 25.0),
+              const Text(
+                "Facebook: (playstore)",
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 10.0),
+              Text(
+                fbValue ?? 'Loading ...',
+              ),
+              const SizedBox(height: 50.0),
+              const Text(
+                "Youtube Vanced (apkPure):",
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 10.0),
+              Text(
+                youtubeValue ?? "loading ...",
+              ),
+            ],
+          ),
         ),
       ),
     );

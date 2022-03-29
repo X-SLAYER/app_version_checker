@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:http/http.dart' as http;
@@ -40,7 +39,6 @@ class AppVersionChecker {
     } else if (Platform.isIOS) {
       return await _checkAppleStore(_currentVersion, _packageName);
     } else {
-      log('The target platform "${Platform.operatingSystem}" is not yet supported by this package.');
       return AppCheckerResult(_currentVersion, null, "",
           'The target platform "${Platform.operatingSystem}" is not yet supported by this package.');
     }
@@ -70,7 +68,6 @@ class AppVersionChecker {
         }
       }
     } catch (e) {
-      log("$e");
       errorMsg = "$e";
     }
     return AppCheckerResult(
@@ -102,7 +99,6 @@ class AppVersionChecker {
         url = uri.toString();
       }
     } catch (e) {
-      log("$e");
       errorMsg = "$e";
     }
     return AppCheckerResult(
@@ -120,7 +116,6 @@ Future<AppCheckerResult> _checkApkPureStore(
   String? newVersion;
   String? url;
   Uri uri = Uri.https("apkpure.com", "$packageName/$packageName");
-  log(uri.toString());
   try {
     final response = await http.get(uri);
     if (response.statusCode != 200) {
@@ -135,7 +130,6 @@ Future<AppCheckerResult> _checkApkPureStore(
       url = uri.toString();
     }
   } catch (e) {
-    log("$e");
     errorMsg = "$e";
   }
   return AppCheckerResult(
