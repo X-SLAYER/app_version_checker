@@ -86,15 +86,13 @@ class AppVersionChecker {
     String? url;
     final uri = Uri.https(
         "play.google.com", "/store/apps/details", {"id": packageName});
-
     try {
       final response = await http.get(uri);
       if (response.statusCode != 200) {
         errorMsg =
             "Can't find an app in the Google Play Store with the id: $packageName";
       } else {
-        newVersion = RegExp(
-                r'Current Version<\/div><span class="htlgb"><div class="IQ1z0d"><span class="htlgb">(.*?)<\/span>')
+        newVersion = RegExp(r',\[\[\["([0-9,\.]*)"]],')
             .firstMatch(response.body)!
             .group(1);
         url = uri.toString();
@@ -166,17 +164,10 @@ class AppCheckerResult {
       _shouldUpdate(currentVersion, (newVersion ?? currentVersion));
 
   bool _shouldUpdate(String versionA, String versionB) {
-    List<String> versionTokensA = versionA.split(".");
-    List<String> versionTokensB = versionB.split(".");
-    List<int> versionNumbersA = [];
-    List<int> versionNumbersB = [];
-
-    for (String versionToken in versionTokensA) {
-      versionNumbersA.add(int.tryParse(versionToken) ?? 0);
-    }
-    for (String versionToken in versionTokensB) {
-      versionNumbersB.add(int.tryParse(versionToken) ?? 0);
-    }
+    final versionNumbersA =
+        versionA.split(".").map((e) => int.tryParse(e) ?? 0).toList();
+    final versionNumbersB =
+        versionB.split(".").map((e) => int.tryParse(e) ?? 0).toList();
 
     final int versionASize = versionNumbersA.length;
     final int versionBSize = versionNumbersB.length;

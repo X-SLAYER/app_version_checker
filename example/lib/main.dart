@@ -14,9 +14,11 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   final _youtubeChecker = AppVersionChecker(
-      appId: "com.vanced.android.youtube", androidStore: AndroidStore.apkPure);
-  final _facebookChecker = AppVersionChecker(appId: "com.facebook.katana");
-  String? fbValue;
+    appId: "com.vanced.android.youtube",
+    androidStore: AndroidStore.apkPure,
+  );
+  final _snapChatChecker = AppVersionChecker(appId: "com.snapchat.android");
+  String? snapValue;
   String? youtubeValue;
 
   @override
@@ -26,8 +28,15 @@ class _MyAppState extends State<MyApp> {
   }
 
   void checkVersion() async {
-    fbValue = (await _facebookChecker.checkUpdate()).toString();
-    youtubeValue = (await _youtubeChecker.checkUpdate()).toString();
+    await Future.wait([
+      _snapChatChecker
+          .checkUpdate()
+          .then((value) => snapValue = value.toString()),
+      _youtubeChecker
+          .checkUpdate()
+          .then((value) => youtubeValue = value.toString()),
+    ]);
+
     setState(() {});
   }
 
@@ -49,7 +58,7 @@ class _MyAppState extends State<MyApp> {
               ),
               const SizedBox(height: 10.0),
               Text(
-                fbValue ?? 'Loading ...',
+                snapValue ?? 'Loading ...',
               ),
               const SizedBox(height: 50.0),
               const Text(

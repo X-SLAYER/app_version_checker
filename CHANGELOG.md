@@ -9,3 +9,6 @@
 ## 0.0.3
 
 - Fix the version comparing algorithm
+## 0.3.1
+
+- Fix the version number for the new Google Play Store changes
