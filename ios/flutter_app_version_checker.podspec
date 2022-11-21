@@ -3,7 +3,7 @@
 # Run `pod lib lint app_version_checker.podspec` to validate before publishing.
 #
 Pod::Spec.new do |s|
-  s.name             = 'app_version_checker'
+  s.name             = 'flutter_app_version_checker'
   s.version          = '0.0.1'
   s.summary          = 'A new Flutter project.'
   s.description      = <<-DESC
