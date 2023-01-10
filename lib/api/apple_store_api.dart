@@ -11,12 +11,18 @@ class AppleStoreApi extends Api {
   Future<AppCheckerResult> checkVersion({
     required String currentVersion,
     required String packageName,
+    String? countryCode,
   }) async {
     String? errorMsg;
     String? newVersion;
     String? url;
+    String? releaseNotes;
     var uri =
-    Uri.https("itunes.apple.com", "/lookup", {"bundleId": packageName});
+    Uri.https("itunes.apple.com", "/lookup", {
+      "bundleId": packageName,
+      if (countryCode != null)
+        "country": countryCode,
+    });
     try {
       final response = await http.get(uri);
       if (response.statusCode != 200) {
@@ -31,16 +37,18 @@ class AppleStoreApi extends Api {
         } else {
           newVersion = jsonObj['results'][0]['version'];
           url = jsonObj['results'][0]['trackViewUrl'];
+          releaseNotes = jsonObj['results'][0]['releaseNotes'];
         }
       }
     } catch (e) {
       errorMsg = "$e";
     }
     return AppCheckerResult(
-      currentVersion,
-      newVersion,
-      url,
-      errorMsg,
+      currentVersion: currentVersion,
+      newVersion: newVersion,
+      releaseNotes: releaseNotes,
+      appURL: url,
+      errorMessage: errorMsg,
     );
   }
 }

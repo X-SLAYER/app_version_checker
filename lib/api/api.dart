@@ -5,6 +5,7 @@ abstract class Api {
   Future<AppCheckerResult> checkVersion({
     required String currentVersion,
     required String packageName,
+    String? countryCode,
   });
 
 }

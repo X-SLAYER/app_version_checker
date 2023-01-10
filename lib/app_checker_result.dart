@@ -7,18 +7,22 @@ class AppCheckerResult {
   /// return the new app version
   final String? newVersion;
 
+  /// Release notes
+  final String? releaseNotes;
+
   /// return the app url
   final String? appURL;
 
   /// return error message if found else it will return `null`
   final String? errorMessage;
 
-  AppCheckerResult(
-      this.currentVersion,
-      this.newVersion,
-      this.appURL,
-      this.errorMessage,
-      );
+  AppCheckerResult({
+    required this.currentVersion,
+    this.newVersion,
+    this.releaseNotes,
+    this.appURL,
+    this.errorMessage,
+  });
 
   /// return `true` if update is available
   bool get canUpdate =>
@@ -48,6 +52,13 @@ class AppCheckerResult {
 
   @override
   String toString() {
-    return "Current Version: $currentVersion\nNew Version: $newVersion\nApp URL: $appURL\ncan update: $canUpdate\nerror: $errorMessage";
+    final stringBuffer = StringBuffer()
+      ..write('Current Version: $currentVersion\n\n')
+      ..write('New Version:\n $newVersion\n\n')
+      ..write(releaseNotes == null ? '' : 'Release Notes:\n $releaseNotes\n\n')
+      ..write('App URL: $appURL\n\n')
+      ..write('can update:\n $canUpdate\n\n')
+      ..write(errorMessage == null ? '' : 'error:\n $errorMessage');
+    return stringBuffer.toString();
   }
 }

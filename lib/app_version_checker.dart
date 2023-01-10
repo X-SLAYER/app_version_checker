@@ -49,8 +49,12 @@ class AppVersionChecker {
           packageName: _packageName,
       );
     } else {
-      return AppCheckerResult(_currentVersion, null, "",
-          'The target platform "${Platform.operatingSystem}" is not yet supported by this package.');
+      return AppCheckerResult(
+          currentVersion: _currentVersion,
+          newVersion: null,
+          appURL: "",
+          errorMessage: 'The target platform "${Platform.operatingSystem}" is not yet supported by this package.',
+      );
     }
   }
 }

@@ -9,12 +9,16 @@ class PlayStoreApi extends Api {
   Future<AppCheckerResult> checkVersion({
     required String currentVersion,
     required String packageName,
+    String? countryCode,
   }) async {
     String? errorMsg;
     String? newVersion;
     String? url;
     final uri = Uri.https(
-        "play.google.com", "/store/apps/details", {"id": packageName});
+        "play.google.com", "/store/apps/details", {
+          "id": packageName,
+      if (countryCode != null) "hl": countryCode
+    });
     try {
       final response = await http.get(uri);
       if (response.statusCode != 200) {
@@ -30,10 +34,10 @@ class PlayStoreApi extends Api {
       errorMsg = "$e";
     }
     return AppCheckerResult(
-      currentVersion,
-      newVersion,
-      url,
-      errorMsg,
+      currentVersion: currentVersion,
+      newVersion: newVersion,
+      appURL: url,
+      errorMessage: errorMsg,
     );
   }
 

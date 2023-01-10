@@ -9,6 +9,7 @@ class ApkPureApi extends Api {
   Future<AppCheckerResult> checkVersion({
     required String currentVersion,
     required String packageName,
+    String? countryCode,
   }) async {
     String? errorMsg;
     String? newVersion;
@@ -31,10 +32,10 @@ class ApkPureApi extends Api {
       errorMsg = "$e";
     }
     return AppCheckerResult(
-      currentVersion,
-      newVersion,
-      url,
-      errorMsg,
+      currentVersion: currentVersion,
+      newVersion: newVersion,
+      appURL: url,
+      errorMessage: errorMsg,
     );
   }
 }
