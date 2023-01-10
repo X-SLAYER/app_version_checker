@@ -54,10 +54,10 @@ class AppCheckerResult {
   String toString() {
     final stringBuffer = StringBuffer()
       ..write('Current Version: $currentVersion\n\n')
-      ..write('New Version:\n $newVersion\n\n')
+      ..write('New Version: $newVersion\n\n')
       ..write(releaseNotes == null ? '' : 'Release Notes:\n $releaseNotes\n\n')
       ..write('App URL: $appURL\n\n')
-      ..write('can update:\n $canUpdate\n\n')
+      ..write('can update: $canUpdate\n\n')
       ..write(errorMessage == null ? '' : 'error:\n $errorMessage');
     return stringBuffer.toString();
   }

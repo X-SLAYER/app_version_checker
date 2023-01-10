@@ -28,6 +28,7 @@ dependencies:
       print(value.canUpdate); //return true if update is available
       print(value.currentVersion); //return current app version
       print(value.newVersion); //return the new app version
+      print(value.releaseNotes); //return the release notes (if given)
       print(value.appURL); //return the app url
       print(value.errorMessage); //return error message if found else it will return null
     });
