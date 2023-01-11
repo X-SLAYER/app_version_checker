@@ -13,20 +13,28 @@ class ApkPureApi extends Api {
   }) async {
     String? errorMsg;
     String? newVersion;
+    String? releaseNotes;
     String? url;
-    Uri uri = Uri.https("apkpure.com", "$packageName/$packageName");
+    Uri uri = Uri.parse('https://apkpure.com/${countryCode != null ? '$countryCode/' : ''}$packageName/$packageName');//("apkpure.com", "$countryCode/$packageName/$packageName");
     try {
       final response = await http.get(uri);
       if (response.statusCode != 200) {
         errorMsg =
         "Can't find an app in the ApkPure Store with the id: $packageName";
       } else {
+        final body = response.body;
         newVersion = RegExp(
             r'<div class="details-sdk"><span itemprop="version">(.*?)<\/span>for Android<\/div>')
-            .firstMatch(response.body)!
+            .firstMatch(body)!
             .group(1)!
             .trim();
         url = uri.toString();
+        releaseNotes = RegExp(
+            r'<div class="describe-whatnew" id="whatsnew">\s*<h3>(.*?)<\/h3>\s*<div>(.*?)<\/div>\s*<div>(.*?)<\/div>')
+            .firstMatch(body)!
+            .group(3)!
+            .trim()
+            .replaceAll('<br>', '\n');
       }
     } catch (e) {
       errorMsg = "$e";
@@ -34,6 +42,7 @@ class ApkPureApi extends Api {
     return AppCheckerResult(
       currentVersion: currentVersion,
       newVersion: newVersion,
+      releaseNotes: releaseNotes,
       appURL: url,
       errorMessage: errorMsg,
     );
