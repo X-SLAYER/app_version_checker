@@ -1,7 +1,7 @@
 # App Version Checker
 
-this package is used to check if your app has a new version on playstore or apple app store.
-or you can even check what is the latest version of another app on playstore or apple app store.
+This package is used to check if your app has a new version on Google Play Store or Apple App Store.
+Or you can even check what is the latest version of another app on Play Store or Apple App Store.
 
 ### Installing
 
@@ -40,7 +40,7 @@ dependencies:
   final _checker = AppVersionChecker(
       appId: "specify the app id (optional)",
       currentVersion: "specify the current version (optional)");
-...
+  ...
 ```
 
 #### Use on ApkPure Store
@@ -50,6 +50,6 @@ dependencies:
     appId: "com.vanced.android.youtube",
     androidStore: AndroidStore.apkPure,
   );
-...
+  ...
 ```
 

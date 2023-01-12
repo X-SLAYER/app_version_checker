@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_app_version_checker/api/api.dart';
 import 'package:flutter_app_version_checker/app_checker_result.dart';
 
@@ -12,8 +13,6 @@ class PlayStoreApi extends Api {
     String? countryCode,
   }) async {
     String? errorMsg;
-    String? newVersion;
-    String? url;
     final uri = Uri.https(
         "play.google.com", "/store/apps/details", {
           "id": packageName,
@@ -25,18 +24,50 @@ class PlayStoreApi extends Api {
         errorMsg =
         "Can't find an app in the Google Play Store with the id: $packageName";
       } else {
-        newVersion = RegExp(r',\[\[\["([0-9,\.]*)"]],')
-            .firstMatch(response.body)!
-            .group(1);
-        url = uri.toString();
+        return extractDataFromHtml(
+          html: response.body,
+          currentVersion: currentVersion,
+          uri: uri,
+        );
       }
     } catch (e) {
       errorMsg = "$e";
     }
     return AppCheckerResult(
       currentVersion: currentVersion,
+      appURL: uri.toString(),
+      errorMessage: errorMsg,
+    );
+  }
+
+  @visibleForTesting
+  AppCheckerResult extractDataFromHtml({
+    required String html,
+    required String currentVersion,
+    required Uri uri,
+  }) {
+    String? errorMsg;
+
+    final newVersion = RegExp(r',\[\[\["([0-9,\.]*)"]],')
+        .firstMatch(html)!
+        .group(1);
+
+    String? releaseNotes;
+    try {
+      releaseNotes = RegExp(r'<div itemprop="description">(.*?)<\/div>')
+          .firstMatch(html)!
+          .group(1)!
+          .trim()
+          .replaceAll('<br>', '\n');
+    } catch (e) {
+      errorMsg = "$e";
+    }
+
+    return AppCheckerResult(
+      currentVersion: currentVersion,
       newVersion: newVersion,
-      appURL: url,
+      releaseNotes: releaseNotes,
+      appURL: uri.toString(),
       errorMessage: errorMsg,
     );
   }
