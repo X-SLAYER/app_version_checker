@@ -26,7 +26,7 @@ class AppVersionChecker {
     this.androidStore = AndroidStore.googlePlayStore,
   });
 
-  Future<AppCheckerResult> checkUpdate() async {
+  Future<AppCheckerResult> checkUpdate({String? countryCode}) async {
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
     final _currentVersion = currentVersion ?? packageInfo.version;
     final _packageName = appId ?? packageInfo.packageName;
@@ -34,26 +34,30 @@ class AppVersionChecker {
       switch (androidStore) {
         case AndroidStore.apkPure:
           return await ApkPureApi().checkVersion(
-              currentVersion: _currentVersion,
-              packageName: _packageName,
+            currentVersion: _currentVersion,
+            packageName: _packageName,
+            countryCode: countryCode,
           );
         default:
           return await PlayStoreApi().checkVersion(
-              currentVersion: _currentVersion,
-              packageName: _packageName,
+            currentVersion: _currentVersion,
+            packageName: _packageName,
+            countryCode: countryCode,
           );
       }
     } else if (Platform.isIOS) {
       return await AppleStoreApi().checkVersion(
-          currentVersion: _currentVersion,
-          packageName: _packageName,
+        currentVersion: _currentVersion,
+        packageName: _packageName,
+        countryCode: countryCode,
       );
     } else {
       return AppCheckerResult(
-          currentVersion: _currentVersion,
-          newVersion: null,
-          appURL: "",
-          errorMessage: 'The target platform "${Platform.operatingSystem}" is not yet supported by this package.',
+        currentVersion: _currentVersion,
+        newVersion: null,
+        appURL: "",
+        errorMessage:
+            'The target platform "${Platform.operatingSystem}" is not yet supported by this package.',
       );
     }
   }
