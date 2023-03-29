@@ -22,10 +22,14 @@ class AppVersionChecker {
   /// default will be `AndroidStore.GooglePlayStore`
   final AndroidStore androidStore;
 
+  ///use [country] to specify app release country on App Store
+  final String? country;
+
   AppVersionChecker({
     this.currentVersion,
     this.appId,
     this.androidStore = AndroidStore.googlePlayStore,
+    this.country,
   });
 
   Future<AppCheckerResult> checkUpdate() async {
@@ -52,8 +56,10 @@ class AppVersionChecker {
     String? errorMsg;
     String? newVersion;
     String? url;
-    var uri =
-        Uri.https("itunes.apple.com", "/lookup", {"bundleId": packageName});
+    var uri = Uri.https("itunes.apple.com", "/lookup", {
+      "bundleId": packageName,
+      if (country != null) "country": country,
+    });
     try {
       final response = await http.get(uri);
       if (response.statusCode != 200) {
