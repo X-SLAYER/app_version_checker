@@ -58,6 +58,7 @@ class PlayStoreApi extends Api {
           .firstMatch(html)!
           .group(1)!
           .trim()
+          .replaceAll('&quote;', '"')
           .replaceAll('<br>', '\n');
     } catch (e) {
       errorMsg = "$e";
