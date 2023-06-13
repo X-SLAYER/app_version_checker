@@ -1,0 +1,1 @@
+enum AndroidStore { googlePlayStore, apkPure }
