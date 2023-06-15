@@ -22,16 +22,22 @@ class AppVersionChecker {
   /// default will be `AndroidStore.GooglePlayStore`
   final AndroidStore androidStore;
 
+  /// The list of ISO-2A country codes used in the app look-up
+  /// if [appStoreCountryCodes] is null the look-up will be base in the US store only
+  final List<String>? appStoreCountryCodes;
+
   AppVersionChecker({
     this.currentVersion,
     this.appId,
     this.androidStore = AndroidStore.googlePlayStore,
+    this.appStoreCountryCodes,
   });
 
   Future<AppCheckerResult> checkUpdate() async {
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
     final _currentVersion = currentVersion ?? packageInfo.version;
     final _packageName = appId ?? packageInfo.packageName;
+    final _countryCodes = appStoreCountryCodes ?? [];
     if (Platform.isAndroid) {
       switch (androidStore) {
         case AndroidStore.apkPure:
@@ -40,20 +46,21 @@ class AppVersionChecker {
           return await _checkPlayStore(_currentVersion, _packageName);
       }
     } else if (Platform.isIOS) {
-      return await _checkAppleStore(_currentVersion, _packageName);
+      return await _checkAppleStore(
+          _currentVersion, _packageName, _countryCodes);
     } else {
       return AppCheckerResult(_currentVersion, null, "",
           'The target platform "${Platform.operatingSystem}" is not yet supported by this package.');
     }
   }
 
-  Future<AppCheckerResult> _checkAppleStore(
-      String currentVersion, String packageName) async {
+  Future<AppCheckerResult> _checkAppleStore(String currentVersion,
+      String packageName, List<String> countryCodes) async {
     String? errorMsg;
     String? newVersion;
     String? url;
-    var uri =
-        Uri.https("itunes.apple.com", "/lookup", {"bundleId": packageName});
+    var uri = Uri.https("itunes.apple.com", "/lookup",
+        {"bundleId": packageName, "country": countryCodes});
     try {
       final response = await http.get(uri);
       if (response.statusCode != 200) {

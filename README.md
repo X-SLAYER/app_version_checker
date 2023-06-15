@@ -42,6 +42,14 @@ dependencies:
 ...
 ```
 
+#### Or
+If your app is not published in the US App Store, you can provide a list of countries where it's available:
+```dart
+  final _checker = AppVersionChecker(
+      appStoreCountryCodes: ["DE", "US", "IT"]);
+...
+```
+
 #### Use on ApkPure Store
 
 ```dart
@@ -51,4 +59,3 @@ dependencies:
   );
 ...
 ```
-
