@@ -17,3 +17,7 @@
 ## 0.3.2
 
 - Fix for IOS 
+
+## 0.4.0
+
+- Add country codes for App Store look-up
