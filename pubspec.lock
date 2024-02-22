@@ -81,13 +81,13 @@ packages:
     source: sdk
     version: "0.0.0"
   http:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: http
-      sha256: "5895291c13fa8a3bd82e76d5627f69e0d85ca6a30dcac95c4ea19a5d555879c2"
+      sha256: "4c3f04bfb64d3efd508d06b41b825542f08122d30bda4933fb95c069d22a4fa3"
       url: "https://pub.dev"
     source: hosted
-    version: "0.13.6"
+    version: "1.0.0"
   http_parser:
     dependency: transitive
     description:
@@ -132,10 +132,10 @@ packages:
     dependency: "direct main"
     description:
       name: package_info_plus
-      sha256: "10259b111176fba5c505b102e3a5b022b51dd97e30522e906d6922c745584745"
+      sha256: "88bc797f44a94814f2213db1c9bd5badebafdfb8290ca9f78d4b9ee2a3db4d79"
       url: "https://pub.dev"
     source: hosted
-    version: "3.1.2"
+    version: "5.0.1"
   package_info_plus_platform_interface:
     dependency: transitive
     description:
@@ -241,10 +241,10 @@ packages:
     dependency: transitive
     description:
       name: win32
-      sha256: a6f0236dbda0f63aa9a25ad1ff9a9d8a4eaaa5012da0dc59d21afdb1dc361ca4
+      sha256: "464f5674532865248444b4c3daca12bd9bf2d7c47f759ce2617986e7229494a8"
       url: "https://pub.dev"
     source: hosted
-    version: "3.1.4"
+    version: "5.2.0"
 sdks:
-  dart: ">=3.2.0-194.0.dev <4.0.0"
-  flutter: ">=2.11.0"
+  dart: ">=3.2.0 <4.0.0"
+  flutter: ">=3.6.0"
